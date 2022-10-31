@@ -1,0 +1,51 @@
+<div class="flex flex-col h-full w-full items-center justify-center">
+  <div class="text-2xl font-bold mb-4">IMPORT PASSANGERS DATA BY CSV FILE</div>
+  <div
+    *ngIf="!existFile"
+    draggable="true"
+    class="border-2 border-dashed p-4 w-full h-3/4 flex items-center justify-center cursor-pointer"
+    ngClass="{{ dragAreaClass }}"
+    (click)="file.click()"
+  >
+    <div class="row">
+      <div class="col-md-12 text-center font-weight-bold text-2xl">
+        Drag files here
+        <!-- <a href="javascript:void(0)" (click)="file.click()"> -->
+        or click to open
+        <!-- </a> -->
+        <input
+          type="file"
+          #file
+          [multiple]="false"
+          (change)="onFileChange($event)"
+          style="display: none"
+        />
+        <div class="dragged-files-wrapper" *ngIf="draggedFiles">
+          <!-- <div class="file" *ngFor="let file of draggedFiles">
+          {{ draggedFiles | json }}
+        </div> -->
+        </div>
+      </div>
+      <div class="text-center">
+        <span class="material-symbols-outlined text-6xl"> place_item </span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="existFile" class="w-full">
+    <mat-card class="w-full">
+      <mat-card-header>
+        <mat-card-title> File selected: {{ fName }} </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+  </div>
+  <div class="error" *ngIf="error">Only one file at time allow</div>
+  <div
+    *ngIf="!error && existFile"
+    class="flex w-full justify-around items-center h-1/4"
+  >
+    <button mat-button color="primary" (click)="upload()">Importar</button>
+    <button mat-button color="warn" (click)="deleteFiles()">
+      Eliminar archivo
+    </button>
+  </div>
+</div>
