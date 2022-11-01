@@ -77,15 +77,18 @@ export class ChooseFileDialogComponent {
     }
   }
 
+  // Clear files and indicates that no one is selected to the view
   deleteFiles() {
     this.existFile = false;
     this.draggedFiles = [];
     this.fName = '';
   }
 
+  // Charge dialog to formData and send it to the endpoint
   upload() {
     let formData = new FormData();
     formData.append('file', this.draggedFiles[0]);
+    // Filter if you want to check every register to do not repeat
     if ( !this.repeating ) formData.append('check', 'true')
     this.titanicService.uploadFile(formData).subscribe({
       next: (response) => {

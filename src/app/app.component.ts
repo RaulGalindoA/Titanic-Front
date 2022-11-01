@@ -17,10 +17,12 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  // Decorator for darkmode
   @HostBinding('class') className = '';
 
   title = 'titanicFront';
 
+  // Filters fields
   name: string = '';
   class: string = '';
   sex: string = '';
@@ -30,6 +32,7 @@ export class AppComponent implements OnInit {
   pageSize = 50;
   pageSizeOptions = [50, 100, 200];
 
+  // Columns displayed in the table
   displayedColumns: string[] = [
     '_id',
     'Survived',
@@ -43,6 +46,7 @@ export class AppComponent implements OnInit {
     'Actions',
   ];
 
+  // Data of the table
   dataSource: Person[] = [];
 
   toggleControl = new FormControl(false);
@@ -51,10 +55,11 @@ export class AppComponent implements OnInit {
     private titanicService: TitanicService,
     private overlay: OverlayContainer,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getAll();
+    // When toggling, activates class for darkmode
     this.toggleControl.valueChanges.subscribe((darkMode) => {
       const darkClassName = 'darkMode';
       this.className = darkMode ? darkClassName : '';
@@ -67,6 +72,7 @@ export class AppComponent implements OnInit {
   }
 
   addPerson() {
+    // Opens the dialog
     const dialogRef = this.dialog.open(AddPersonDialogComponent);
     dialogRef.afterClosed().subscribe((resp) => {
       if (resp) {
@@ -75,12 +81,14 @@ export class AppComponent implements OnInit {
           height: '400px',
           data: resp,
         });
+        // Reloads the table to add the new person
+        this.getAll();
       }
     });
-    this.getAll();
   }
 
   editPerson(person: Person) {
+    // Opens the dialog
     const dialogRef = this.dialog.open(AddPersonDialogComponent, {
       data: person,
     });
@@ -91,6 +99,7 @@ export class AppComponent implements OnInit {
           height: '400px',
           data: resp,
         });
+        // Reloads the table for refreshing the person edited
         this.getAll();
       }
     });
@@ -102,6 +111,7 @@ export class AppComponent implements OnInit {
       height: '500px',
     });
     dialogRef.afterClosed().subscribe((resp) => {
+      // Depending of the dialog Response, shows a new dialog indicating the result
       if (resp) {
         let dialogData: DialogData = {
           message: 'Archivo cargado correctamente.',
@@ -131,12 +141,13 @@ export class AppComponent implements OnInit {
   }
 
   getAll() {
+    // Calls the service getAll and displays to the table
     this.titanicService.getAll(this.pageSize, this.pageIndex).subscribe({
       next: (resp) => {
         this.dataSource = resp.data!;
         this.length = resp.length!;
       },
-      error: (error) => {},
+      error: (error) => { },
     });
   }
 
@@ -145,10 +156,12 @@ export class AppComponent implements OnInit {
       message: `¿Are you sure you want to delete: ${person.Name}?`,
       header: 'Warning',
     };
+    // Opens the confirmation dialog
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: dialogData,
       width: '500px',
     });
+    // If the user clicked yes, calls the service and shows a dialog with the response of the service and refreshes the table
     dialogRef.afterClosed().subscribe((resp) => {
       if (resp) {
         this.titanicService.deletePerson(person).subscribe((resp) => {
@@ -168,6 +181,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  // If is changed the pagesize or pageindex, is called this function updating the table options
   handlePageEvent(event: PageEvent) {
     this.length = event.length;
     this.pageSize = event.pageSize;
@@ -175,6 +189,7 @@ export class AppComponent implements OnInit {
     this.getAll();
   }
 
+  // Clears the filters and refreshes the table
   clear() {
     this.name = '';
     this.class = '';
@@ -182,6 +197,7 @@ export class AppComponent implements OnInit {
     this.getAll();
   }
 
+  // Calls the endpoint getAll with the selected filters
   filters() {
     this.titanicService
       .getAll(
