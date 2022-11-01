@@ -41,11 +41,12 @@
   <div class="error" *ngIf="error">Only one file at time allow</div>
   <div
     *ngIf="!error && existFile"
-    class="flex w-full justify-around items-center h-1/4"
+    class="flex w-full justify-between items-center h-1/4"
   >
-    <button mat-button color="primary" (click)="upload()">Importar</button>
+    <button mat-button color="primary" (click)="upload()">Import</button>
+    <mat-checkbox [(ngModel)]="repeating" class="m-4">¿Allow repeating names?</mat-checkbox>
     <button mat-button color="warn" (click)="deleteFiles()">
-      Eliminar archivo
+      Delete actual file
     </button>
   </div>
 </div>

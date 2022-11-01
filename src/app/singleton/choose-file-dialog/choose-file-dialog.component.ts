@@ -28,6 +28,8 @@ export class ChooseFileDialogComponent {
     public dialogRef: MatDialogRef<ChooseFileDialogComponent>
   ) {}
 
+  repeating: boolean = false;
+
   ngOnInit() {
     this.dragAreaClass = 'dragarea';
   }
@@ -84,20 +86,19 @@ export class ChooseFileDialogComponent {
   upload() {
     let formData = new FormData();
     formData.append('file', this.draggedFiles[0]);
+    if ( !this.repeating ) formData.append('check', 'true')
     this.titanicService.uploadFile(formData).subscribe({
       next: (response) => {
         console.log('Cargado');
         console.log(response);
-        
+
         this.dialogRef.close(true);
       },
       error: (error) => {
         console.log('error');
         this.dialogRef.close(false);
       },
-      complete() {
-        
-      },
+      complete() {},
     });
   }
 }
