@@ -13,7 +13,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [],
@@ -32,7 +33,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatCardModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatPaginatorModule,
   ],
 })
 export class MaterialModule {}

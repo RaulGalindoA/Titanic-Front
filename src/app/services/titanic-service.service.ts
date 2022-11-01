@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Person } from '../interfaces/person';
@@ -13,8 +13,22 @@ export class TitanicService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Person[]> {
-    return this.http.get<Person[]>(this.baseUrl + `api/person/getAll`);
+  getAll(
+    pageSize: number,
+    pageNumber: number,
+    name?: string,
+    pclass?: string,
+    sex?: string
+  ): Observable<ApiResponse> {
+    let params = new HttpParams()
+      .set('pageSize', pageSize)
+      .set('pageNumber', pageNumber);
+    if (name) params = params.set('name', name);
+    if (pclass) params = params.set('pclass', pclass);
+    if (sex) params = params.set('sex', sex);
+    return this.http.get<ApiResponse>(this.baseUrl + `api/person/getAll`, {
+      params,
+    });
   }
 
   uploadFile(formData: FormData): Observable<ApiResponse> {

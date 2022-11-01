@@ -1,35 +1,54 @@
-<div class="flex flex-col">
-  <form action="">
-    <mat-checkbox class="example-margin"> Survived </mat-checkbox>
-    <mat-form-field appearance="outline">
+<form [formGroup]="myForm" (ngSubmit)="addPerson()">
+  <div class="flex flex-col">
+    <div class="text-2xl font-bold">Add an extra passenger</div>
+    <mat-checkbox formControlName="Survived" class="my-4">
+      Survived
+    </mat-checkbox>
+    <mat-form-field class="" appearance="outline">
       <mat-label>Class</mat-label>
-      <mat-select>
+      <mat-select formControlName="Pclass">
         <mat-option [value]="1">1</mat-option>
         <mat-option [value]="2">2</mat-option>
         <mat-option [value]="3">3</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Outline form field</mat-label>
-      <input matInput placeholder="Placeholder" />
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      <mat-hint>Hint</mat-hint>
+    <mat-form-field class="" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input formControlName="Name" matInput placeholder="Placeholder" />
     </mat-form-field>
-    <mat-radio-group aria-label="Select an option">
-      <mat-radio-button value="1">Option 1</mat-radio-button>
-      <mat-radio-button value="2">Option 2</mat-radio-button>
+    <div class="font-bold my-1">Sex</div>
+    <mat-radio-group
+      class="flex flex-col items-center justify-center"
+      formControlName="Sex"
+      aria-label="Select an option"
+    >
+      <div class="w-full mt-2 mb-4 flex justify-around">
+        <mat-radio-button value="male">Male</mat-radio-button>
+        <mat-radio-button value="female">Female</mat-radio-button>
+      </div>
+      <mat-error class="mb-4" *ngIf="myForm.get('Sex')!.errors"
+        >Required</mat-error
+      >
     </mat-radio-group>
-    <mat-form-field appearance="fill">
-      <mat-label>Input</mat-label>
-      <input type="number" matInput />
+    <mat-form-field class="" appearance="outline">
+      <mat-label>Age</mat-label>
+      <input formControlName="Age" type="number" matInput />
     </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Input</mat-label>
-      <input type="number" matInput />
+    <mat-form-field class="" appearance="outline">
+      <mat-label>Siblings/Spouses Aboard </mat-label>
+      <input formControlName="SiblingsSpouses" type="number" matInput />
     </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Input</mat-label>
-      <input type="number" matInput />
+    <mat-form-field class="" appearance="outline">
+      <mat-label>Parents/Children Aboard </mat-label>
+      <input formControlName="ParentsChildren" type="number" matInput />
     </mat-form-field>
-  </form>
-</div>
+    <mat-form-field class="" appearance="outline">
+      <mat-label>Fare </mat-label>
+      <input formControlName="Fare" type="number" matInput />
+    </mat-form-field>
+  </div>
+  <div class="w-full flex justify-between">
+    <button mat-raised-button mat-dialog-close color="warn">Cancelar</button>
+    <button mat-raised-button type="submit" color="primary">Confirm</button>
+  </div>
+</form>

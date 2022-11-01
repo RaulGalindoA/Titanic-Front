@@ -9,6 +9,7 @@ import { ChooseFileDialogComponent } from './singleton/choose-file-dialog/choose
 import { ResponseDialogComponent } from './singleton/response-dialog/response-dialog.component';
 import { DialogData } from './interfaces/dialog-data';
 import { ConfirmDialogComponent } from './singleton/confirm-dialog/confirm-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,15 @@ export class AppComponent implements OnInit {
   @HostBinding('class') className = '';
 
   title = 'titanicFront';
+
+  name: string = '';
+  class: string = '';
+  sex: string = '';
+
+  pageIndex: number = 0;
+  length = 0;
+  pageSize = 50;
+  pageSizeOptions = [50, 100, 200];
 
   displayedColumns: string[] = [
     '_id',
@@ -57,7 +67,33 @@ export class AppComponent implements OnInit {
   }
 
   addPerson() {
-    this.dialog.open(AddPersonDialogComponent);
+    const dialogRef = this.dialog.open(AddPersonDialogComponent);
+    dialogRef.afterClosed().subscribe((resp) => {
+      if (resp) {
+        this.dialog.open(ResponseDialogComponent, {
+          width: '500px',
+          height: '400px',
+          data: resp,
+        });
+      }
+    });
+    this.getAll();
+  }
+
+  editPerson(person: Person) {
+    const dialogRef = this.dialog.open(AddPersonDialogComponent, {
+      data: person,
+    });
+    dialogRef.afterClosed().subscribe((resp) => {
+      if (resp) {
+        this.dialog.open(ResponseDialogComponent, {
+          width: '500px',
+          height: '400px',
+          data: resp,
+        });
+        this.getAll();
+      }
+    });
   }
 
   import() {
@@ -95,9 +131,10 @@ export class AppComponent implements OnInit {
   }
 
   getAll() {
-    this.titanicService.getAll().subscribe({
+    this.titanicService.getAll(this.pageSize, this.pageIndex).subscribe({
       next: (resp) => {
-        this.dataSource = resp;
+        this.dataSource = resp.data!;
+        this.length = resp.length!;
       },
       error: (error) => {},
     });
@@ -129,5 +166,35 @@ export class AppComponent implements OnInit {
         });
       }
     });
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.length = event.length;
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.getAll();
+  }
+
+  clear() {
+    this.name = '';
+    this.class = '';
+    this.sex = '';
+    this.getAll();
+  }
+
+  filters() {
+    this.titanicService
+      .getAll(
+        this.pageSize,
+        this.pageIndex,
+        this.name != '' ? this.name : undefined,
+        this.class != '' ? this.class : undefined,
+        this.sex != '' ? this.sex : undefined
+      )
+      .subscribe({
+        next: (resp) => {
+          this.dataSource = resp.data!;
+        },
+      });
   }
 }

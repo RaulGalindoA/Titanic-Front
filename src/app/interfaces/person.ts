@@ -1,5 +1,5 @@
 export interface Person {
-  _id: string;
+  _id?: string;
   Survived: number;
   Pclass: number;
   Name: string;
@@ -8,5 +8,5 @@ export interface Person {
   SiblingsSpouses: number;
   ParentsChildren: number;
   Fare: number;
-  __v: number;
+  __v?: number;
 }
