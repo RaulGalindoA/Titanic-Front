@@ -1,5 +1,5 @@
 <form [formGroup]="myForm" (ngSubmit)="addPerson()">
-  <div class="flex flex-col">
+  <div class="flex flex-col h-1/2 px-4 overflow-y-scroll" style="height: 500px;">
     <div class="text-2xl font-bold">{{ data ? 'Add': 'Edit'}} passenger</div>
     <mat-checkbox formControlName="Survived" class="my-4">
       Survived
@@ -26,8 +26,11 @@
         <mat-radio-button value="male">Male</mat-radio-button>
         <mat-radio-button value="female">Female</mat-radio-button>
       </div>
-      <mat-error class="mb-4" *ngIf="myForm.get('Sex')!.errors"
-        >Required</mat-error
+      <mat-error class="mb-4" 
+      *ngIf="myForm.get('Sex')!.errors && myForm.get('Sex')!.touched"
+        >
+        Required
+        </mat-error
       >
     </mat-radio-group>
     <mat-form-field class="" appearance="outline">

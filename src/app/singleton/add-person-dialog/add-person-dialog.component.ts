@@ -52,7 +52,7 @@ export class AddPersonDialogComponent implements OnInit {
     this.myForm.markAllAsTouched();
     if (this.myForm.invalid) return;
     let auxPerson: Person = {
-      _id: this.data._id,
+      _id: this.data && this.data._id ? this.data._id: undefined,
       Age: this.myForm.get('Age')?.value,
       Pclass: this.myForm.get('Pclass')?.value,
       Name: this.myForm.get('Name')?.value,
