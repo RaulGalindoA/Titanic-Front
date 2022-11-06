@@ -13,6 +13,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AddPersonDialogComponent implements OnInit {
   person!: Person;
 
+  // Declares form with the attributes
   myForm: FormGroup = this.fb.group({
     Survived: [],
     Pclass: [, [Validators.required]],
@@ -32,6 +33,7 @@ export class AddPersonDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // If is inserted data to the dialog, it means that is a person being edited and assigns all the values
     if (this.data) {
       this.myForm.controls['Survived'].setValue(this.data.Survived);
       this.myForm.controls['Pclass'].setValue(this.data.Pclass);
@@ -49,8 +51,10 @@ export class AddPersonDialogComponent implements OnInit {
   }
 
   addPerson() {
+    // Validation of form
     this.myForm.markAllAsTouched();
     if (this.myForm.invalid) return;
+    // Assigns the form to an object for being sent to the endpoint
     let auxPerson: Person = {
       _id: this.data && this.data._id ? this.data._id: undefined,
       Age: this.myForm.get('Age')?.value,
@@ -65,6 +69,7 @@ export class AddPersonDialogComponent implements OnInit {
 
     this.person = auxPerson;
 
+    // If there was data introduced to the dialog, update, if not, we add a new one
     if (this.data) {
       this.titanicService.updatePerson(this.person).subscribe({
         next: (resp) => {
